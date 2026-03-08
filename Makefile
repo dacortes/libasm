@@ -1,19 +1,16 @@
-################################################################################
-#                               COLORS                                         #
-################################################################################
+# SPDX-License-Identifier: GPL-2.0
 
+################################################################################
+#                               COLOR DEFINITIONS                              #
+################################################################################
 END = \033[m
 RED = \033[31m
 GREEN = \033[32m
 YELLOW = \033[33m
 BLUE = \033[34m
 LIGTH = \033[1m
-DARK = \033[2m 
+DARK = \033[2m
 ITALIC = \033[3m
-
-################################################################################
-#                               LABELS                                         #
-################################################################################
 
 SUCCESS = $(LIGTH)$(GREEN)[SUCCESS]$(END)
 WARNING = $(LIGTH)$(YELLOW)[WARNING]$(END)
@@ -21,7 +18,7 @@ INFO = $(LIGTH)$(BLUE)[INFO]$(END)
 ERROR = $(LIGTH)$(RED)[ERROR]$(END)
 
 ################################################################################
-#                               VARIABLES                                      #
+#                               BUILD VARIABLES                                     #
 ################################################################################
 
 NAME := libasm
@@ -55,12 +52,35 @@ CC := gcc -Wall -Werror -Wextra
 DIRS_TO_CREATE = $(DIRECTORY_OBJ) $(DIRECTORY_DEP)
 SUB_DIRECTORIES := tests/src
 
-################################################################################
-#                               MAKE RULES                                     #
-################################################################################
+REQUIRED_TOOLS = nasm gcc
 
+################################################################################
+#                               DEFAULT TARGET                                 #
+################################################################################
 all: dir $(OBJECTS) $(NAME)
 
+################################################################################
+#                               REQUIREMENTS CHECK                             #
+################################################################################
+check_requirements:
+	@failed=false; \
+	for tool in $(REQUIRED_TOOLS); do \
+		if command -v $$tool >/dev/null 2>&1; then \
+			printf "$(GREEN)$(LIGTH)[$$tool is installed.]$(END) Proceeding...\n"; \
+		else \
+			printf "$(RED)$(LIGTH)[$$tool is not installed.]$(END) Please install $$tool to proceed.\n"; \
+			failed=true; \
+		fi; \
+	done; \
+	if [ "$$failed" = true ]; then exit 1; fi
+	@if [ ! -f $(LINKER) ]; then \
+		printf "$(ERROR) Linker script $(LINKER) not found!\n"; \
+		exit 1; \
+	fi
+
+################################################################################
+#                               HELP TARGET                                    #
+################################################################################
 help:
 	@printf "$(INFO) Available rules:\n\n"
 	@printf "  $(BLUE)make all$(END)        $(INFO) Build directories, compile objects and create the library\n"
@@ -72,6 +92,9 @@ help:
 	@printf "  $(BLUE)make re$(END)         $(INFO) Rebuild everything from scratch\n"
 	@printf "  $(BLUE)make help$(END)       $(INFO) Show this help message\n"
 
+################################################################################
+#                               DIRECTORY CREATION                             #
+################################################################################
 dir:
 	@for DIR in $(DIRS_TO_CREATE); do \
 		if [ ! -d $$DIR ]; then \
@@ -114,6 +137,9 @@ test: dir $(NAME) $(OBJECTS_TEST)
 	fi
 
 
+################################################################################
+#                               CLEANUP TARGETS                                #
+################################################################################
 clean:
 	@for DIR in $(DIRS_TO_CREATE); do \
 		if [ -d $$DIR ]; then \

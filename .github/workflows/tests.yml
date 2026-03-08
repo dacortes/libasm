@@ -13,4 +13,7 @@ jobs:
     steps:
     - name: test echo
       run: |
-       echo "test pull request"
+       sudo apt-get update
+       sudo apt-get install -y \
+       gcc \
+       nasm && echo "[SUCCESS] Download and install dependencies"
