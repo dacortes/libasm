@@ -31,3 +31,5 @@ main
 *.exe
 *.out
 *.app
+
+.vscode
