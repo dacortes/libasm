@@ -9,11 +9,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: foo
+    name: Build and Test
     steps:
-    - name: test echo
+  
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
       run: |
        sudo apt-get update
        sudo apt-get install -y \
        gcc \
        nasm && echo "[SUCCESS] Download and install dependencies"
+    
+    - name: test compare
+      run: |
+       echo Init test with makefile test
+       make test
+       if [ ! -f test ]; then \
+        printf "[ERROR]: Failed to create binary test\n"; \
+       else \
+        printf "[SUCCESS] binary test created\n"; \
+       fi
