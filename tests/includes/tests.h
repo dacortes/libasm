@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tests.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dacortes <dacortes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2025/12/05 14:27:57 by dacortes         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:53:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <setjmp.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 /******************************************************************************/
 /*                            COLORS                                          */

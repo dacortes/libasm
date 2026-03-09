@@ -37,11 +37,11 @@ bool	check_null(size_t (*func)(const char *), const char *param)
 	return segf;
 }
 
-static void loop_test(const char *data[], int len)
+static bool loop_test(const char *data[], int len)
 {
 	if (!data || len <= 0) {
 		dprintf(1, "%s invalid data\n", STR_ERR);
-		return ;
+		return false;
 	}
 
 	bool	all_ok = true;
@@ -63,6 +63,7 @@ static void loop_test(const char *data[], int len)
 		
 		if (data[i] == NULL)
 			continue ;
+
 		size_t len_my = ft_strlen(data[i]);
 		size_t len_orig = strlen(data[i]);
 
@@ -78,15 +79,18 @@ static void loop_test(const char *data[], int len)
 		dprintf(1, "\t%s All tests for valid strings passed\n", STR_SCC);
 	else
 		dprintf(1, "\t%s Some tests for valid strings failed\n", STR_ERR);
+	return all_ok;
 }
 
 void inject_data_strlen(void) {
 	const char *simple_data[] = {"", "a", "hello", "hello world!", NULL};
 
 	dprintf(1, "%s Test simple data\n", STR_INF);
-	loop_test(simple_data, 5);
+	if (!loop_test(simple_data, 5))
+		exit(ERROR);
 
 	const char *null_data[] = {NULL, "", NULL, "", NULL, "", NULL, "", NULL, NULL};
 	dprintf(1, "%s Test null data\n", STR_INF);
-	loop_test(null_data, 10);
+	if (!loop_test(null_data, 10))
+		exit(ERROR);
 }
