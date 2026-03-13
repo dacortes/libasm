@@ -25,11 +25,12 @@ NAME := libasm
 RMV = rm -rf
 
 SOURCES := \
-	ft_strlen.s
+	ft_strlen.s ft_strcpy.s
 
 DIR_TEST := tests/src/
 SOURCES_TEST := \
-	$(DIR_TEST)test_strlen.c $(DIR_TEST)main.c
+	$(DIR_TEST)test_strlen.c $(DIR_TEST)test_strcpy.c \
+	$(DIR_TEST)main.c
 
 DIRECTORY_OBJ = .obj
 DIRECTORY_DEP = .dep

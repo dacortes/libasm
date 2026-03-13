@@ -51,8 +51,8 @@ static bool loop_test(const char *data[], int len)
 		bool	orig = check_null(strlen, data[i]);
 
 		const char *tmp = data[i];
-			if (!tmp)
-				tmp = "NULL";
+		if (!tmp)
+			tmp = "NULL";
 
 		if (my == orig)
 			dprintf(1, "\t%s Same behavior: param: *%s%s%s*\n", STR_SCC, BLUE, tmp, END);
