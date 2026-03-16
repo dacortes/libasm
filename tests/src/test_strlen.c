@@ -1,21 +1,30 @@
 #include <tests.h>
 
-static sigjmp_buf env;
+sigjmp_buf env;
 
-void	segfault_handler(int sig, siginfo_t *info, void *context)
+void	handle_sigsegv(int sig, siginfo_t *info, void *context)
 {
 	(void)sig;
 	(void)info;
 	(void)context;
+	 printf("\t%s Captured signal %d (%s)\n", STR_WAR, sig, strsignal(sig));
 	siglongjmp(env, 1);
 }
 
+void handle_sigabrt(int sig, siginfo_t *info, void *context)
+{
+	(void)sig;
+	(void)info;
+	(void)context;
+	printf("\t%s Captured stack smashing (SIGABRT)\n", STR_WAR);
+	siglongjmp(env, 1);
+}
 
-bool	check_null(size_t (*func)(const char *), const char *param)
+static bool	check_null(size_t (*func)(const char *), const char *param)
 {
 	struct sigaction sa, old_sa;
 
-	sa.sa_sigaction = segfault_handler;
+	sa.sa_sigaction = handle_sigsegv;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO | SA_NODEFER;
 
@@ -51,8 +60,8 @@ static bool loop_test(const char *data[], int len)
 		bool	orig = check_null(strlen, data[i]);
 
 		const char *tmp = data[i];
-			if (!tmp)
-				tmp = "NULL";
+		if (!tmp)
+			tmp = "NULL";
 
 		if (my == orig)
 			dprintf(1, "\t%s Same behavior: param: *%s%s%s*\n", STR_SCC, BLUE, tmp, END);

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2026/03/09 13:53:46 by codespace        ###   ########.fr       */
+/*   Updated: 2026/03/13 17:36:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <setjmp.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <errno.h>
 
 /******************************************************************************/
 /*                            COLORS                                          */
@@ -43,8 +44,16 @@
 
 #define ERR_SIG STR_ERR" sigaction"
 
+extern sigjmp_buf env;
+
 size_t	ft_strlen(const char *);
+char    *ft_strcpy(char *, const char *);
 
 
-/*	Test strlen		*/
+/*  General tools   */
+void	handle_sigsegv(int sig, siginfo_t *info, void *context);
+void    handle_sigabrt(int sig, siginfo_t *info, void *context);
+
+/*	Test            */
 void	inject_data_strlen(void);
+void    inject_data_strcpy(void);
