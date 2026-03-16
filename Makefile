@@ -163,6 +163,7 @@ fclean: clean
 
 	@if [ -f test ]; then \
 		$(RMV) test; \
+		$(RMV) logs; \
 		printf "$(SUCCESS) Removed executable: main\n"; \
 	else \
 		printf "$(WARNING) Executable not found: main\n"; \

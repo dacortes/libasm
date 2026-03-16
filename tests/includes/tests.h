@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2026/03/13 17:36:57 by codespace        ###   ########.fr       */
+/*   Updated: 2026/03/16 17:03:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <sys/wait.h>
+#include <sys/mman.h>
+#include <fcntl.h>
 
 /******************************************************************************/
 /*                            COLORS                                          */
@@ -52,8 +58,8 @@ char    *ft_strcpy(char *, const char *);
 
 /*  General tools   */
 void	handle_sigsegv(int sig, siginfo_t *info, void *context);
-void    handle_sigabrt(int sig, siginfo_t *info, void *context);
+void	handle_sigabrt(int sig, siginfo_t *info, void *context);
 
-/*	Test            */
+/*	Test			*/
 void	inject_data_strlen(void);
-void    inject_data_strcpy(void);
+void	inject_data_strcpy(void);
