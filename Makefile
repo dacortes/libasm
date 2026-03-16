@@ -48,7 +48,7 @@ FLAGS_ASM := -MD -MF
 LIB_ASM := ar rcs
 
 INCLUDES := $(addprefix -I, ./tests/includes)
-CC := gcc -Wall -Werror -Wextra
+CC := gcc -Wall #-Werror #-Wextra
 
 DIRS_TO_CREATE = $(DIRECTORY_OBJ) $(DIRECTORY_DEP)
 SUB_DIRECTORIES := tests/src

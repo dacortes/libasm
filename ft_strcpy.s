@@ -5,21 +5,17 @@ section .text
 	ft_strcpy:
 		push rbp
 		mov rbp, rsp
-		mov rcx, 0
-
-
 		mov rax, rdi
-
-;		pop rbp
-;		ret
+		xor rcx, rcx
 
 	.loop:
+		mov dl, [rsi + rcx]
+		mov [rdi + rcx], dl
+		cmp dl, 0
+		je .done
 		inc rcx
-		cmp byte[rdi + rcx], 0
-		jz .break
 		jmp .loop
-	
-	.break:
+
+	.done:
 		pop rbp
-		mov rax, rsi
 		ret
