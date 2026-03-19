@@ -6,7 +6,7 @@ typedef struct {
 	const char *src;
 	const char *description;
 	bool should_crash;
-} TestCase;
+} StrcpyTestCase;
 
 #define TEST_CASE(name_str, dst_size_val, src_str) \
 { \
@@ -72,7 +72,7 @@ static bool check_aborted(char *(*func)(char *, const char *),
 	}
 }
 
-bool run_test_case(TestCase *test, int index) {
+bool run_test_case(StrcpyTestCase *test, int index) {
 	char dst_orig[test->dst_size];
 	char dst[test->dst_size];
 
@@ -182,7 +182,7 @@ void test_with_different_sources(void)
 		snprintf(test_name, sizeof(test_name), 
 				"Buffer[%zu] <- \"%s\"", buffer_size, sources[i]);
 		
-		TestCase test = {
+		StrcpyTestCase test = {
 			.name = test_name,
 			.dst_size = buffer_size,
 			.src = sources[i],
@@ -206,7 +206,7 @@ void inject_data_strcpy(void)
 	dprintf(1, "%s     TESTING STRCPY - BUFFER OVERFLOW%s\n", BLUE, END);
 	dprintf(1, "%s========================================%s\n\n", BLUE, END);
 	
-	TestCase tests[] = {
+	StrcpyTestCase tests[] = {
 		TEST_CASE("Insufficient buffer (1 byte)", 1, "mundo"),
 		TEST_CASE("Insufficient buffer (2 bytes)", 2, "mundo"),
 		TEST_CASE("Insufficient buffer (3 bytes)", 3, "mundo"),

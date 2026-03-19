@@ -11,13 +11,13 @@ typedef struct {
 } StrlenTestCase;
 
 #define STRLEN_TEST_CASE(name_str, input_str, expected, crash, desc) \
-	{ \
-		.name = name_str, \
-		.input = input_str, \
-		.expected_len = expected, \
-		.should_crash = crash, \
-		.description = desc \
-	}
+{ \
+	.name = name_str, \
+	.input = input_str, \
+	.expected_len = expected, \
+	.should_crash = crash, \
+	.description = desc \
+}
 
 static const char* safe_string(const char *str) {
 	return str ? str : "NULL";
