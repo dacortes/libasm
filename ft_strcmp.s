@@ -1,36 +1,29 @@
-; ft_strcmp(char *s1, const char *s2)
+; ft_strcmp - Versión simplificada y correcta
 global ft_strcmp
 
-section .text
+	section .text
 	ft_strcmp:
 		push rbp
 		mov rbp, rsp
-	
+
 	.loop:
 		mov al, [rdi]
 		cmp al, [rsi]
-		jne .dif
+		jne .diff
+		test al, al
+		jz .equal
 		inc rdi
 		inc rsi
-		test al, al
-		jnz .loop
-
-		jmp .equal
-		jmp .done
+		jmp .loop
 
 	.equal:
 		xor eax, eax
+		jmp .done
 
-	.dif:
+	.diff:
 		movzx eax, byte [rdi]
 		movzx ecx, byte [rsi]
-		ja .greater
-		mov eax, -1
-		jmp .done
-
-	.greater:
-		mov eax, 1
-		jmp .done
+		sub eax, ecx
 
 	.done:
 		pop rbp

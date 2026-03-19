@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2026/03/18 14:06:16 by codespace        ###   ########.fr       */
+/*   Updated: 2026/03/18 15:24:52 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,4 @@ void	handle_sigabrt(int sig, siginfo_t *info, void *context);
 /*	Test			*/
 void	inject_data_strlen(void);
 void	inject_data_strcpy(void);
+void	inject_data_strcmp(void);
