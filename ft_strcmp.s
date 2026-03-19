@@ -1,7 +1,7 @@
 ; ft_strcmp - Versión simplificada y correcta
 global ft_strcmp
 
-	section .text
+section .text
 	ft_strcmp:
 		push rbp
 		mov rbp, rsp

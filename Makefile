@@ -25,7 +25,7 @@ NAME := libasm
 RMV = rm -rf
 
 SOURCES := \
-	ft_strlen.s ft_strcpy.s ft_strcmp.s
+	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
 
 DIR_TEST := tests/src/
 SOURCES_TEST := \
