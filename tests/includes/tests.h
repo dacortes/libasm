@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2026/03/19 14:12:56 by codespace        ###   ########.fr       */
+/*   Updated: 2026/03/20 13:13:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ extern sigjmp_buf env;
 size_t	ft_strlen(const char *);
 char	*ft_strcpy(char *, const char *);
 int		ft_strcmp(const char *, const char *);
-ssize_t ft_write(int, const void *, size_t count);
-
+ssize_t	ft_write(int, const void *, size_t count);
 
 /*  General tools   */
 void	handle_sigsegv(int sig, siginfo_t *info, void *context);
@@ -66,3 +65,4 @@ void	handle_sigabrt(int sig, siginfo_t *info, void *context);
 void	inject_data_strlen(void);
 void	inject_data_strcpy(void);
 void	inject_data_strcmp(void);
+void	inject_data_write(void);
