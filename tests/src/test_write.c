@@ -318,21 +318,34 @@ static void test_pipe_writes(void)
 	dprintf(1, "\n%s--- Pipe Writes ---%s\n", CYAN, END);
 	
 	int pipefd[2];
+	struct sigaction old_sa;
 
+	// Normal pipe write
 	if (pipe(pipefd) == 0) {
 		WriteTestCase test = WRITE_TEST_CASE("Write to pipe", pipefd[1], "pipe test", 9, 9, 0, false,
-										   "Write to pipe should succeed");
+										"Write to pipe should succeed");
 		run_write_test(&test, 0);
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
 
+	// Broken pipe (ignorar SIGPIPE)
 	if (pipe(pipefd) == 0) {
-		close(pipefd[0]);
+		close(pipefd[0]);  // Cerrar lectura
+		
+		// Ignorar SIGPIPE
+		struct sigaction sa;
+		sa.sa_handler = SIG_IGN;
+		sigemptyset(&sa.sa_mask);
+		sa.sa_flags = 0;
+		sigaction(SIGPIPE, &sa, &old_sa);
 		
 		WriteTestCase test = WRITE_TEST_CASE("Broken pipe", pipefd[1], "test", 4, -1, EPIPE, false,
-										   "Write to broken pipe should return EPIPE");
+										"Write to broken pipe should return EPIPE");
 		run_write_test(&test, 1);
+		
+		// Restaurar
+		sigaction(SIGPIPE, &old_sa, NULL);
 		close(pipefd[1]);
 	}
 }
