@@ -31,7 +31,7 @@ SOURCES := \
 DIR_TEST := tests/src/
 SOURCES_TEST := \
 	$(DIR_TEST)test_strlen.c $(DIR_TEST)test_strcpy.c \
-	$(DIR_TEST)test_strcmp.c \
+	$(DIR_TEST)test_strcmp.c $(DIR_TEST)test_write.c\
 	$(DIR_TEST)main.c
 
 DIRECTORY_OBJ = .obj

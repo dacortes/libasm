@@ -30,4 +30,5 @@ ft_write:
 	pop rbx
 	pop rbp
 	ret
-	
+
+section .note.GNU-stack noalloc noexec nowrite progbits
