@@ -22,6 +22,7 @@ ERROR = $(LIGTH)$(RED)[ERROR]$(END)
 ################################################################################
 
 NAME := libasm
+NAME_TEST := lib_test
 RMV = rm -rf
 
 SOURCES := \
@@ -132,7 +133,7 @@ $(NAME): $(OBJECTS)
 
 test: dir $(NAME) $(OBJECTS_TEST)
 	@printf "\n$(INFO) Building test executable ... "
-	@if $(CC) $(OBJECTS_TEST) -L. -lasm -o test; then \
+	@if $(CC) $(OBJECTS_TEST) -L. -lasm -o $(NAME_TEST); then \
 		printf "\n$(SUCCESS) Test executable created: test\n"; \
 	else \
 		printf "$(ERROR) Failed to build tests\n"; \
@@ -162,8 +163,8 @@ fclean: clean
 		printf "$(WARNING) Library not found: $(NAME).a\n"; \
 	fi
 
-	@if [ -f test ]; then \
-		$(RMV) test; \
+	@if [ -f $(NAME_TEST) ]; then \
+		$(RMV) $(NAME_TEST); \
 		$(RMV) logs; \
 		printf "$(SUCCESS) Removed executable: main\n"; \
 	else \
@@ -205,4 +206,4 @@ COMPILED_FILES_TEST=0
 -include $(DEPENDENCIES_TEST)
 
 .SILENT:
-.PHONY: all help test $(NAME) test clean fclean re
+.PHONY: all help test $(NAME) clean fclean re
