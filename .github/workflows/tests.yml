@@ -27,19 +27,19 @@ jobs:
        echo "Init test with makefile test"
        make test
        
-       if [ ! -f test ]; then 
-         printf "[ERROR]: Failed to create binary test\n"
+       if [ ! -f lib_test ]; then 
+         printf "[ERROR]: Failed to create binary lib_test\n"
          if [ "${{ github.event_name }}" = "pull_request" ]; then
            printf "❌ Pull Request failed: Binary not created\n"
          fi
          exit 1
        else 
-         printf "[SUCCESS] binary test created\n"
+         printf "[SUCCESS] binary lib_test created\n"
        fi
        
-       chmod +x test
+       chmod +x lib_test
        
-       if ! ./test; then
+       if ! ./lib_test; then
          printf "[ERROR]: Test execution failed\n"
          if [ "${{ github.event_name }}" = "pull_request" ]; then
            printf "❌ Pull Request failed: Tests didn't pass\n"
