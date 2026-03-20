@@ -320,7 +320,6 @@ static void test_pipe_writes(void)
 	int pipefd[2];
 	struct sigaction old_sa;
 
-	// Normal pipe write
 	if (pipe(pipefd) == 0) {
 		WriteTestCase test = WRITE_TEST_CASE("Write to pipe", pipefd[1], "pipe test", 9, 9, 0, false,
 										"Write to pipe should succeed");
@@ -329,11 +328,8 @@ static void test_pipe_writes(void)
 		close(pipefd[1]);
 	}
 
-	// Broken pipe (ignorar SIGPIPE)
 	if (pipe(pipefd) == 0) {
-		close(pipefd[0]);  // Cerrar lectura
-		
-		// Ignorar SIGPIPE
+		close(pipefd[0]);
 		struct sigaction sa;
 		sa.sa_handler = SIG_IGN;
 		sigemptyset(&sa.sa_mask);
@@ -344,7 +340,6 @@ static void test_pipe_writes(void)
 										"Write to broken pipe should return EPIPE");
 		run_write_test(&test, 1);
 		
-		// Restaurar
 		sigaction(SIGPIPE, &old_sa, NULL);
 		close(pipefd[1]);
 	}
