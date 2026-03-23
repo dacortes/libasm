@@ -1,5 +1,15 @@
+/**
+ * @file main.c
+ * @brief Entry point for the libasm validation executable.
+ */
+
 #include <tests.h>
 
+/**
+ * @brief Executes every test suite exposed by the repository.
+ *
+ * @return 0 after all suites have been launched.
+ */
 int	main(void)
 {
 	inject_data_strlen();

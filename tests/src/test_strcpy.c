@@ -1,3 +1,8 @@
+/**
+ * @file test_strcpy.c
+ * @brief Validation scenarios for the ft_strcpy assembly implementation.
+ */
+
 #include <tests.h>
 
 typedef struct {
@@ -25,6 +30,7 @@ typedef struct {
 
 static SharedResult *shared = NULL;
 
+/** Runs a strcpy-like function in a child process to detect crashes safely. */
 static bool check_aborted(char *(*func)(char *, const char *), 
 						char *dst, const char *src, 
 						char *result_buffer, size_t result_size)
@@ -72,6 +78,7 @@ static bool check_aborted(char *(*func)(char *, const char *),
 	}
 }
 
+/** Runs one buffer-copy scenario and compares ft_strcpy with libc strcpy. */
 bool run_test_case(StrcpyTestCase *test, int index) {
 	char dst_orig[test->dst_size];
 	char dst[test->dst_size];
@@ -153,6 +160,7 @@ bool run_test_case(StrcpyTestCase *test, int index) {
 	return correct;
 }
 
+/** Repeats the strcpy comparison with many source strings and a fixed buffer size. */
 void test_with_different_sources(void)
 {
 	dprintf(1, "\n%s--- Testing with different source strings ---%s\n", CYAN, END);
@@ -200,6 +208,7 @@ void test_with_different_sources(void)
 			passed, num_sources, END);
 }
 
+/** Launches the complete ft_strcpy test suite. */
 void inject_data_strcpy(void)
 {
 	dprintf(1, "\n%s========================================%s\n", BLUE, END);

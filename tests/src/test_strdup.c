@@ -1,6 +1,11 @@
+/**
+ * @file test_strdup.c
+ * @brief Validation scenarios for the ft_strdup assembly implementation.
+ */
+
 #include <tests.h>
 
-// Structure for strdup test cases
+/** Describes one ft_strdup validation scenario. */
 typedef struct {
 	const char *name;
 	const char *input;
@@ -10,7 +15,7 @@ typedef struct {
 	const char *description;
 } StrdupTestCase;
 
-// Macro to create test cases
+/* Helper macro used to declare compact strdup test cases. */
 #define STRDUP_TEST_CASE(name_str, input_str, expected, err, crash, desc) \
 	{ \
 		.name = name_str, \
@@ -21,7 +26,7 @@ typedef struct {
 		.description = desc \
 	}
 
-// Helper to check if strdup crashes
+/** Runs a strdup-like function in a child process to detect crash behavior. */
 static bool check_strdup_crash(char *(*func)(const char *), const char *s)
 {
 	pid_t pid = fork();
@@ -32,7 +37,7 @@ static bool check_strdup_crash(char *(*func)(const char *), const char *s)
 	}
 	
 	if (pid == 0) {
-		// Child process
+		// Execute the function inside the isolated child process.
 		func(s);
 		_exit(0);
 	} else {
@@ -46,12 +51,13 @@ static bool check_strdup_crash(char *(*func)(const char *), const char *s)
 	}
 }
 
-// Helper to clear errno
+/** Resets errno before a strdup-oriented assertion. */
 static void clear_errno(void)
 {
 	errno = 0;
 }
 
+/** Probes whether a duplicated pointer appears readable. */
 bool is_valid_memory(char *ptr, size_t size)
 {
 	if (ptr == NULL)
@@ -62,7 +68,7 @@ bool is_valid_memory(char *ptr, size_t size)
 	return true;
 }
 
-// Run a single test case
+/** Runs one ft_strdup scenario and compares it against libc strdup. */
 static bool run_strdup_test(StrdupTestCase *test, int index)
 {
 	dprintf(1, "\n%s--- Test %d: %s ---%s\n", CYAN, index + 1, test->name, END);
@@ -111,7 +117,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 	
 	bool correct = true;
 	
-	// Check crash behavior
+	// Validate crash behavior.
 	if (test->should_crash) {
 		if (my_crashed != orig_crashed) {
 			dprintf(1, "  %s✗ Different crash behavior: ft=%s, orig=%s%s\n",
@@ -131,7 +137,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 		return correct;
 	}
 	
-	// Check errno
+	// Validate errno propagation.
 	if (my_errno_saved != orig_errno_saved) {
 		dprintf(1, "  %s✗ errno mismatch: ft=%d, orig=%d%s\n",
 				RED, my_errno_saved, orig_errno_saved, END);
@@ -143,7 +149,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 		correct = false;
 	}
 	
-	// Check if memory was allocated
+	// Validate that a new allocation was returned.
 	if (my_result == NULL && test->expected_result != NULL) {
 		dprintf(1, "  %s✗ ft_strdup returned NULL when expecting a string%s\n",
 				RED, END);
@@ -154,7 +160,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 		correct = false;
 	}
 	
-	// Compare results
+	// Compare both duplicated strings.
 	if (my_result && orig_result) {
 		if (strcmp(my_result, orig_result) != 0) {
 			dprintf(1, "  %s✗ Content mismatch: ft=\"%s\", orig=\"%s\"%s\n",
@@ -168,7 +174,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 			dprintf(1, "  %s✓ Content correct: \"%s\"%s\n", GREEN, my_result, END);
 		}
 		
-		// Check if memory is independent (modify one shouldn't affect the other)
+		// Verify that both returned pointers refer to independent storage.
 		if (my_result && orig_result && my_result != orig_result) {
 			char original = my_result[0];
 			if (original != '\0') {
@@ -185,7 +191,7 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 			}
 		}
 		
-		// Free allocated memory
+		// Release the heap buffers allocated during the test.
 		free(my_result);
 		free(orig_result);
 	}
@@ -199,7 +205,8 @@ static bool run_strdup_test(StrdupTestCase *test, int index)
 	return correct;
 }
 
-// Test 1: Normal strings
+// Suite 1: normal strings.
+/** Covers ordinary string duplication scenarios. */
 static void test_normal_strings(void)
 {
 	dprintf(1, "\n%s--- Normal Strings ---%s\n", CYAN, END);
@@ -245,7 +252,8 @@ static void test_normal_strings(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
-// Test 2: Special characters
+// Suite 2: special characters.
+/** Covers special characters and UTF-8 payloads. */
 static void test_special_characters(void)
 {
 	dprintf(1, "\n%s--- Special Characters ---%s\n", CYAN, END);
@@ -289,7 +297,8 @@ static void test_special_characters(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
-// Test 3: Edge cases
+// Suite 3: edge cases.
+/** Covers NULL pointers and very large strings. */
 static void test_edge_cases(void)
 {
 	dprintf(1, "\n%s--- Edge Cases ---%s\n", CYAN, END);
@@ -320,7 +329,8 @@ static void test_edge_cases(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
-// Test 4: Memory independence test
+// Suite 4: memory independence.
+/** Verifies that the duplicate uses an independent allocation. */
 static void test_memory_independence(void)
 {
 	dprintf(1, "\n%s--- Memory Independence ---%s\n", CYAN, END);
@@ -390,7 +400,8 @@ static void test_memory_independence(void)
 	}
 }
 
-// Test 5: Multiple allocations (memory leak test)
+// Suite 5: multiple allocations.
+/** Repeats duplication across multiple independent allocations. */
 static void test_multiple_allocations(void)
 {
 	dprintf(1, "\n%s--- Multiple Allocations ---%s\n", CYAN, END);
@@ -442,7 +453,8 @@ static void test_multiple_allocations(void)
 	}
 }
 
-// Test 6: Stress test (many allocations)
+// Suite 6: stress test.
+/** Repeats allocation and free cycles to smoke-test stability. */
 static void test_stress(void)
 {
 	dprintf(1, "\n%s--- Stress Test ---%s\n", CYAN, END);
@@ -483,7 +495,8 @@ static void test_stress(void)
 	}
 }
 
-// Test 7: Very large string (memory limit test)
+// Suite 7: very large string.
+/** Duplicates a large heap-allocated string to validate scale. */
 static void test_very_large_string(void)
 {
 	dprintf(1, "\n%s--- Very Large String ---%s\n", CYAN, END);
@@ -520,7 +533,8 @@ static void test_very_large_string(void)
 	}
 }
 
-// Main test function
+// Main test entry point for this module.
+/** Launches the complete ft_strdup test suite. */
 void inject_data_strdup(void)
 {
 	dprintf(1, "\n%s========================================%s\n", BLUE, END);

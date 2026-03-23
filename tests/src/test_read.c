@@ -1,3 +1,8 @@
+/**
+ * @file test_read.c
+ * @brief Validation scenarios for the ft_read assembly implementation.
+ */
+
 #include <tests.h>
 
 typedef struct {
@@ -23,6 +28,7 @@ typedef struct {
 		.description = desc \
 	}
 
+/** Runs a read-like function in a child process to detect crash behavior. */
 static bool check_read_crash(ssize_t (*func)(int, void *, size_t), 
 							  int fd, void *buf, size_t count)
 {
@@ -47,11 +53,13 @@ static bool check_read_crash(ssize_t (*func)(int, void *, size_t),
 	}
 }
 
+/** Resets errno before a read-oriented assertion. */
 static void clear_errno(void)
 {
 	errno = 0;
 }
 
+/** Runs one ft_read scenario and compares it against libc read. */
 static bool run_read_test(ReadTestCase *test, int index)
 {
 	dprintf(1, "\n%s--- Test %d: %s ---%s\n", CYAN, index + 1, test->name, END);
@@ -166,6 +174,7 @@ static bool run_read_test(ReadTestCase *test, int index)
 	return correct;
 }
 
+/** Covers standard-input reads that require interactive data when enabled. */
 void test_stdin_reads(void)
 {
 	dprintf(1, "\n%s--- STDIN Reads ---%s\n", CYAN, END);
@@ -192,6 +201,7 @@ void test_stdin_reads(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers successful reads from a temporary regular file. */
 static void test_file_reads(void)
 {
 	dprintf(1, "\n%s--- File Reads ---%s\n", CYAN, END);
@@ -248,6 +258,7 @@ static void test_file_reads(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers invalid file descriptor failures. */
 static void test_invalid_fds(void)
 {
 	dprintf(1, "\n%s--- Invalid File Descriptors ---%s\n", CYAN, END);
@@ -281,6 +292,7 @@ static void test_invalid_fds(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers successful reads from pipe endpoints. */
 static void test_pipe_reads(void)
 {
 	dprintf(1, "\n%s--- Pipe Reads ---%s\n", CYAN, END);
@@ -288,7 +300,7 @@ static void test_pipe_reads(void)
 	int pipefd[2];
 
 	if (pipe(pipefd) == 0) {
-		// Escribir datos
+		// Write data into the pipe before exercising the read path.
 		write(pipefd[1], "Hello from pipe", 15);
 
 		// char my_buf[100] = {0};
@@ -331,6 +343,7 @@ static void test_pipe_reads(void)
 	}
 }
 
+/** Covers NULL buffers, zero counts, and large-count scenarios. */
 static void test_edge_cases(void)
 {
 	dprintf(1, "\n%s--- Edge Cases ---%s\n", CYAN, END);
@@ -386,6 +399,7 @@ static void test_edge_cases(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Verifies the transition from a successful read to end-of-file. */
 static void test_eof_behavior(void)
 {
 	dprintf(1, "\n%s--- EOF Behavior ---%s\n", CYAN, END);
@@ -416,6 +430,7 @@ static void test_eof_behavior(void)
 	dprintf(1, "\n%sEOF behavior: tests completed%s\n", CYAN, END);
 }
 
+/** Verifies reads from /dev/zero. */
 static void test_dev_zero(void)
 {
 	dprintf(1, "\n%s--- Read from /dev/zero ---%s\n", CYAN, END);
@@ -431,6 +446,7 @@ static void test_dev_zero(void)
 	}
 }
 
+/** Verifies reads from /dev/urandom. */
 void test_dev_urandom(void)
 {
 	dprintf(1, "\n%s--- Read from /dev/urandom ---%s\n", CYAN, END);
@@ -446,6 +462,7 @@ void test_dev_urandom(void)
 	}
 }
 
+/** Launches the complete ft_read test suite. */
 void inject_data_read(void)
 {
 	dprintf(1, "\n%s========================================%s\n", BLUE, END);
