@@ -7,5 +7,6 @@ int	main(void)
 	inject_data_strcmp();
 	inject_data_write();
 	inject_data_read();
+	inject_data_strdup();
 	return 0;
 }

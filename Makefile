@@ -26,13 +26,13 @@ NAME_TEST := lib_test
 RMV = rm -rf
 
 SOURCES := \
-	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
+	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
 
 DIR_TEST := tests/src/
 SOURCES_TEST := \
 	$(DIR_TEST)test_strlen.c $(DIR_TEST)test_strcpy.c \
 	$(DIR_TEST)test_strcmp.c $(DIR_TEST)test_write.c \
-	$(DIR_TEST)test_read.c \
+	$(DIR_TEST)test_read.c $(DIR_TEST)test_strdup.c \
 	$(DIR_TEST)main.c
 
 DIRECTORY_OBJ = .obj
@@ -111,12 +111,8 @@ dir:
 	done
 
 $(DIRECTORY_OBJ)/%.o: %.s Makefile
-	@printf "$(INFO) Compiling $< ... \n"
-	@if $(ASM) $(FLAGS_ASM) $(DIRECTORY_DEP)/$*.d $< -o $@; then \
-		printf "$(SUCCESS) Object generated: $@\n"; \
-	else \
-		printf "$(ERROR) Failed to compile: $<\n"; \
-	fi
+	@$(ASM) $(FLAGS_ASM) $(DIRECTORY_DEP)/$*.d $< -o $@ 2>/dev/null || \
+	{ printf "$(ERROR) Failed to compile: $<\n"; exit 1; }
 	@$(call progress,$<)
 
 $(DIRECTORY_OBJ)/%.o: %.c Makefile
