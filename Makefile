@@ -26,12 +26,13 @@ NAME_TEST := lib_test
 RMV = rm -rf
 
 SOURCES := \
-	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
+	ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
 
 DIR_TEST := tests/src/
 SOURCES_TEST := \
 	$(DIR_TEST)test_strlen.c $(DIR_TEST)test_strcpy.c \
-	$(DIR_TEST)test_strcmp.c $(DIR_TEST)test_write.c\
+	$(DIR_TEST)test_strcmp.c $(DIR_TEST)test_write.c \
+	$(DIR_TEST)test_read.c \
 	$(DIR_TEST)main.c
 
 DIRECTORY_OBJ = .obj
