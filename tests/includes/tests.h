@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 11:50:33 by dacortes          #+#    #+#             */
-/*   Updated: 2026/03/23 13:07:54 by codespace        ###   ########.fr       */
+/*   Updated: 2026/03/23 15:12:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	*ft_strcpy(char *, const char *);
 int		ft_strcmp(const char *, const char *);
 ssize_t	ft_write(int, const void *, size_t);
 ssize_t ft_read(int, void *, size_t);
+char	*ft_strdup(const char *);
 
 /*  General tools   */
 void	handle_sigsegv(int sig, siginfo_t *info, void *context);
@@ -68,3 +69,4 @@ void	inject_data_strcpy(void);
 void	inject_data_strcmp(void);
 void	inject_data_write(void);
 void	inject_data_read(void);
+void	inject_data_strdup(void);
