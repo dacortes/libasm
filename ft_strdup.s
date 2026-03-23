@@ -24,7 +24,6 @@ section .text
 	ft_strdup:
 		push rbp
 		mov rbp, rsp
-		push rbx
 
 		; Preserve the source pointer because ft_strlen consumes rdi.
 		mov rbx, rdi
@@ -49,7 +48,6 @@ section .text
 		xor rax, rax
 
 	.done:
-		pop rbx
 		pop rbp
 		ret
 
