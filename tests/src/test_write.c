@@ -1,3 +1,8 @@
+/**
+ * @file test_write.c
+ * @brief Validation scenarios for the ft_write assembly implementation.
+ */
+
 #include <tests.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -27,6 +32,7 @@ typedef struct {
 		.description = desc \
 	}
 
+/** Runs a write-like function in a child process to detect crash behavior. */
 static bool check_write_crash(ssize_t (*func)(int, const void *, size_t), 
 							   int fd, const void *buf, size_t count)
 {
@@ -51,11 +57,13 @@ static bool check_write_crash(ssize_t (*func)(int, const void *, size_t),
 	}
 }
 
+/** Resets errno before a write-oriented assertion. */
 static void clear_errno(void)
 {
 	errno = 0;
 }
 
+/** Runs one ft_write scenario and compares it against libc write. */
 static bool run_write_test(WriteTestCase *test, int index)
 {
 	dprintf(1, "\n%s--- Test %d: %s ---%s\n", CYAN, index + 1, test->name, END);
@@ -148,6 +156,7 @@ static bool run_write_test(WriteTestCase *test, int index)
 	return correct;
 }
 
+/** Covers successful writes to standard output. */
 static void test_stdout_writes(void)
 {
 	dprintf(1, "\n%s--- STDOUT Writes ---%s\n", CYAN, END);
@@ -183,6 +192,7 @@ static void test_stdout_writes(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers invalid file descriptor failures. */
 static void test_invalid_fds(void)
 {
 	dprintf(1, "\n%s--- Invalid File Descriptors ---%s\n", CYAN, END);
@@ -214,6 +224,7 @@ static void test_invalid_fds(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers writes to a regular file and verifies the resulting file contents. */
 static void test_file_writes(void)
 {
 	dprintf(1, "\n%s--- File Writes ---%s\n", CYAN, END);
@@ -257,6 +268,7 @@ static void test_file_writes(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers successful writes to standard error. */
 static void test_stderr_writes(void)
 {
 	dprintf(1, "\n%s--- STDERR Writes ---%s\n", CYAN, END);
@@ -282,6 +294,7 @@ static void test_stderr_writes(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers NULL buffers, zero counts, and oversized counts. */
 static void test_edge_cases(void)
 {
 	dprintf(1, "\n%s--- Edge Cases ---%s\n", CYAN, END);
@@ -313,6 +326,7 @@ static void test_edge_cases(void)
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers pipe writes and the broken-pipe error path. */
 static void test_pipe_writes(void)
 {
 	dprintf(1, "\n%s--- Pipe Writes ---%s\n", CYAN, END);
@@ -345,6 +359,7 @@ static void test_pipe_writes(void)
 	}
 }
 
+/** Covers EBADF behavior when writing through a read-only descriptor. */
 static void test_readonly_fd(void)
 {
 	dprintf(1, "\n%s--- Read-only File Descriptor ---%s\n", CYAN, END);
@@ -361,6 +376,7 @@ static void test_readonly_fd(void)
 	}
 }
 
+/** Launches the complete ft_write test suite. */
 void inject_data_write(void)
 {
 	dprintf(1, "\n%s========================================%s\n", BLUE, END);

@@ -1,3 +1,8 @@
+/**
+ * @file test_strlen.c
+ * @brief Validation scenarios for the ft_strlen assembly implementation.
+ */
+
 #include <tests.h>
 
 sigjmp_buf env;
@@ -23,6 +28,7 @@ static const char* safe_string(const char *str) {
 	return str ? str : "NULL";
 }
 
+/** Converts SIGSEGV into a long jump so crash-oriented tests can continue. */
 void	handle_sigsegv(int sig, siginfo_t *info, void *context)
 {
 	(void)sig;
@@ -32,6 +38,7 @@ void	handle_sigsegv(int sig, siginfo_t *info, void *context)
 	siglongjmp(env, 1);
 }
 
+/** Converts SIGABRT into a long jump so abort-oriented tests can continue. */
 void handle_sigabrt(int sig, siginfo_t *info, void *context)
 {
 	(void)sig;
@@ -41,6 +48,7 @@ void handle_sigabrt(int sig, siginfo_t *info, void *context)
 	siglongjmp(env, 1);
 }
 
+/** Executes a strlen-like function while capturing crash signals for invalid input tests. */
 static bool	check_null(size_t (*func)(const char *), const char *param)
 {
 	struct sigaction sa_segv, sa_abrt;
@@ -74,6 +82,7 @@ static bool	check_null(size_t (*func)(const char *), const char *param)
 	return had_error;
 }
 
+/** Runs one ft_strlen scenario and compares the result against the libc strlen implementation. */
 static bool run_strlen_test(StrlenTestCase *test, int index) {
 	dprintf(1, "\n%s--- Test %d: %s ---%s\n", CYAN, index + 1, test->name, END);
 	
@@ -150,6 +159,7 @@ static bool run_strlen_test(StrlenTestCase *test, int index) {
 	return correct;
 }
 
+/** Covers typical ASCII strings with different lengths. */
 static void test_normal_strings(void) {
 	dprintf(1, "\n%s--- Normal Strings ---%s\n", CYAN, END);
 	
@@ -195,6 +205,7 @@ static void test_normal_strings(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers UTF-8 and control-character inputs handled byte by byte. */
 static void test_special_characters(void) {
 	dprintf(1, "\n%s--- Special Characters ---%s\n", CYAN, END);
 	
@@ -240,6 +251,7 @@ static void test_special_characters(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers NULL pointers and other edge conditions. */
 static void test_edge_cases(void) {
 	dprintf(1, "\n%s--- Edge Cases ---%s\n", CYAN, END);
 	
@@ -274,6 +286,7 @@ static void test_edge_cases(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Exercises strlen with arrays of strings to validate repeated calls. */
 static void test_string_arrays(void) {
 	dprintf(1, "\n%s--- String Arrays ---%s\n", CYAN, END);
 	
@@ -314,6 +327,7 @@ static void test_string_arrays(void) {
 			passed == num_strings ? GREEN : RED, passed, num_strings, END);
 }
 
+/** Measures ft_strlen against libc for a coarse performance comparison. */
 static void test_performance(void) {
 	dprintf(1, "\n%s--- Performance Test ---%s\n", CYAN, END);
 	
@@ -346,6 +360,7 @@ static void test_performance(void) {
 	}
 }
 
+/** Launches the complete ft_strlen test suite. */
 void inject_data_strlen(void) {
 	dprintf(1, "\n%s========================================%s\n", BLUE, END);
 	dprintf(1, "%s         TESTING STRLEN%s\n", BLUE, END);

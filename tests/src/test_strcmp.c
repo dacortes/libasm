@@ -1,3 +1,8 @@
+/**
+ * @file test_strcmp.c
+ * @brief Validation scenarios for the ft_strcmp assembly implementation.
+ */
+
 #include <tests.h>
 
 typedef struct {
@@ -31,6 +36,7 @@ typedef struct {
 	.description = desc \
 }
 
+/** Normalizes an integer comparison result to -1, 0, or 1. */
 static int get_sign(int val) {
     if (val > 0)
 		return 1;
@@ -39,6 +45,7 @@ static int get_sign(int val) {
     return 0;
 }
 
+/** Executes a strcmp-like function while capturing crash signals for invalid input tests. */
 bool check_null(int (*func)(const char *, const char *), const char *s1, const char *s2)
 {
 	struct sigaction sa_segv, sa_abrt;
@@ -71,6 +78,7 @@ bool check_null(int (*func)(const char *, const char *), const char *s1, const c
 	return had_error;
 }
 
+/** Runs one ft_strcmp scenario and compares it against libc strcmp. */
 static bool run_strcmp_test(StrcmpTestCase *test, int index) {
 	dprintf(1, "\n%s--- Test %d: %s ---%s\n", CYAN, index + 1, test->name, END);
 	
@@ -151,6 +159,7 @@ static bool run_strcmp_test(StrcmpTestCase *test, int index) {
 	return correct;
 }
 
+/** Covers strings that should compare as equal. */
 static void test_identical_strings(void) {
 	dprintf(1, "\n%s--- Identical Strings ---%s\n", CYAN, END);
 	
@@ -192,6 +201,7 @@ static void test_identical_strings(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers common non-equal string comparisons. */
 static void test_different_strings(void) {
 	dprintf(1, "\n%s--- Different Strings ---%s\n", CYAN, END);
 	
@@ -234,6 +244,7 @@ static void test_different_strings(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers control characters, extended bytes, and UTF-8 byte sequences. */
 static void test_special_characters(void) {
 	dprintf(1, "\n%s--- Special Characters ---%s\n", CYAN, END);
 	
@@ -267,6 +278,7 @@ static void test_special_characters(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Validates exact subtraction results for representative byte pairs. */
 static void test_exact_differences(void) {
 	dprintf(1, "\n%s--- Exact Differences ---%s\n", CYAN, END);
 	
@@ -300,6 +312,7 @@ static void test_exact_differences(void) {
 			passed == num_tests ? GREEN : RED, passed, num_tests, END);
 }
 
+/** Covers NULL pointers and very long strings. */
 static void test_edge_cases(void) {
 	dprintf(1, "\n%s--- Edge Cases ---%s\n", CYAN, END);
 	
@@ -371,6 +384,7 @@ static void test_edge_cases(void) {
 // 	}
 // }
 
+/** Launches the complete ft_strcmp test suite. */
 void inject_data_strcmp(void) {
     dprintf(1, "\n%s========================================%s\n", BLUE, END);
     dprintf(1, "%s         TESTING STRCMP%s\n", BLUE, END);
