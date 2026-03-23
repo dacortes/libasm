@@ -1,24 +1,24 @@
-global ft_write
+global ft_read
 extern __errno_location
 
 section .text
-	ft_write:
+	ft_read:
 		push rbp
 		mov rbp, rsp
 		push rbx
 		push r12
-		
-		mov rax, 1
+
+		mov rax, 0
 		syscall
-		
-		test rax, rax
-		js .error
-		
+
+		cmp rax, 0
+		jl .error
+
 		pop r12
 		pop rbx
 		pop rbp
 		ret
-		
+	
 	.error:
 		mov r12, rax
 		call __errno_location wrt ..plt
